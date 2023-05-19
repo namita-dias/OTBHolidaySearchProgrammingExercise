@@ -5,7 +5,7 @@ namespace HolidaySearch.Models
 	{
 		public Flight Flight;
 		public Hotel Hotel;
-		public string TotalPrice;
+		public decimal TotalPrice;
 	}
 }
 

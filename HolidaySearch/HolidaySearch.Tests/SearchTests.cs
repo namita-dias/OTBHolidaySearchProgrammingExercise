@@ -16,7 +16,7 @@ public class SearchTests
     {
         var result = search.FindBestValueHoliday(departingFrom, travellingTo, departureDate, duration);
 
-        Assert.That(result.Flight.Id, Is.EqualTo(expectedFlight));
-        Assert.That(result.Hotel.Id, Is.EqualTo(expectedHotel));
+        Assert.That(result.First().Flight.Id, Is.EqualTo(expectedFlight));
+        Assert.That(result.First().Hotel.Id, Is.EqualTo(expectedHotel));
     }
 }

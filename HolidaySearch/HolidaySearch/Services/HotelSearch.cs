@@ -12,11 +12,11 @@ namespace HolidaySearch.Services
             _filePath = Environment.CurrentDirectory + filePath;
         }
 
-        public Hotel FindBestValueHotels(string travellingTo, DateTime arrivalDate, int duration)
+        public List<Hotel> FindBestValueHotels(string travellingTo, DateTime arrivalDate, int duration)
         {
             try
             {
-                return ReadHotelData()!.Where(hotel => hotel.Local_Airports.Contains(travellingTo.Split('(', ')')[1]) && hotel.Arrival_Date == arrivalDate && hotel.Nights == duration).FirstOrDefault();
+                return ReadHotelData()!.Where(hotel => hotel.Local_Airports.Contains(travellingTo.Split('(', ')')[1]) && hotel.Arrival_Date == arrivalDate && hotel.Nights == duration).OrderBy(price => price.Price_Per_Night).ToList();
             }
             catch (Exception ex)
             {

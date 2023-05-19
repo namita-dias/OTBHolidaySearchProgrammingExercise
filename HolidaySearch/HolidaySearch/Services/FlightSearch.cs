@@ -12,15 +12,23 @@ namespace HolidaySearch.Services
             _filePath = Environment.CurrentDirectory + filePath;
         }
 
-        public Flight FindBestValueFlight(string departingFrom, string travellingTo, DateTime departureDate)
+        public List<Flight> FindBestValueFlight(string departingFrom, string travellingTo, DateTime departureDate)
         {
-            if (departingFrom.Contains("Any London Airport"))
-                return ReadFlightsData().Where(flight => (flight.From == "LTN" || flight.From == "LGW") && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).OrderBy(price => price.Price).FirstOrDefault();
-            else
-                if (departingFrom.Contains("Any Airport"))
-                return ReadFlightsData().Where(flight => flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).OrderBy(price => price.Price).FirstOrDefault();
-            else
-                return ReadFlightsData().Where(flight => flight.From == (departingFrom.Split('(', ')')[1]) && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).FirstOrDefault();
+            try
+            {
+                if (departingFrom.Contains("Any London Airport"))
+                    return ReadFlightsData().Where(flight => (flight.From == "LTN" || flight.From == "LGW") && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).OrderBy(price => price.Price).ToList();
+                else
+                    if (departingFrom.Contains("Any Airport"))
+                    return ReadFlightsData().Where(flight => flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).OrderBy(price => price.Price).ToList();
+                else
+                    return ReadFlightsData().Where(flight => flight.From == (departingFrom.Split('(', ')')[1]) && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error finding best value flights." + ex);
+                return null;
+            }
         }
 
         private List<Flight> ReadFlightsData()
