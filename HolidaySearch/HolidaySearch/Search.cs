@@ -14,12 +14,23 @@ public class Search
 
     public SearchResult FindBestValueHoliday(string departingFrom, string travellingTo, DateTime departureDate, int duration)
     {
-        return new SearchResult()
+        try { 
+
+            Flight bestValueFlight = flightSearch.FindBestValueFlight(departingFrom, travellingTo, departureDate);
+            Hotel bestValueHotel = hotelSearch.FindBestValueHotels(travellingTo, departureDate, duration);
+
+            return new SearchResult()
+            {
+                Flight = bestValueFlight,
+                Hotel = bestValueHotel,
+                TotalPrice = (bestValueFlight.Price + (bestValueHotel.Price_Per_Night * duration)).ToString("C")
+            };
+        }
+        catch (Exception ex)
         {
-            Flight = flightSearch.FindBestValueFlight(departingFrom, travellingTo, departureDate),
-            Hotel = hotelSearch.FindBestValueHotels(travellingTo, departureDate, duration),
-            TotalPrice = "£826"
-        };
+            Console.WriteLine("Error finding the best value holiday." + ex);
+            return null;
+        }
     }
 }
 

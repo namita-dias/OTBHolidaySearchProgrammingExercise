@@ -14,7 +14,10 @@ namespace HolidaySearch.Services
 
         public Flight FindBestValueFlight(string departingFrom, string travellingTo, DateTime departureDate)
         {
-            return ReadFlightsData().Where(flight => flight.From == (departingFrom.Split('(', ')')[1]) && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).FirstOrDefault();
+            if (departingFrom.Contains("Any London Airport"))
+                return ReadFlightsData().Where(flight => (flight.From == "LTN" || flight.From == "LGW") && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).OrderBy(price => price.Price).FirstOrDefault();
+            else
+                return ReadFlightsData().Where(flight => flight.From == (departingFrom.Split('(', ')')[1]) && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).FirstOrDefault();
         }
 
         private List<Flight> ReadFlightsData()
