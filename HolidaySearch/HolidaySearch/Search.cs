@@ -5,9 +5,11 @@ namespace HolidaySearch;
 public class Search
 {
     private IFlightSearch flightSearch;
+    private IHotelSearch hotelSearch;
     public Search()
     {
         flightSearch = new FlightSearch("/Data/Flights.json");
+        hotelSearch = new HotelSearch();
     }
 
     public SearchResult FindBestValueHoliday(string departingFrom, string travellingTo, DateTime departureDate, int duration)
@@ -15,15 +17,7 @@ public class Search
         return new SearchResult()
         {
             Flight = flightSearch.FindBestValueFlight(departingFrom, travellingTo, departureDate),
-            Hotel = new Hotel()
-            {
-                Id = 9,
-                Name = "Nh Malaga",
-                ArrivalDate = new DateTime(2023, 07, 01),
-                PricePerNight = 83,
-                LocalAirport = "AGP",
-                Nights = 7
-            },
+            Hotel = hotelSearch.FindBestValueHotels(travellingTo, departureDate, duration),
             TotalPrice = "£826"
         };
     }
