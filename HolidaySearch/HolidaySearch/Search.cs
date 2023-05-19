@@ -1,21 +1,20 @@
 ﻿using HolidaySearch.Models;
+using HolidaySearch.Services;
 
 namespace HolidaySearch;
 public class Search
 {
+    private IFlightSearch flightSearch;
+    public Search()
+    {
+        flightSearch = new FlightSearch();
+    }
 
     public SearchResult FindBestValueHoliday(string departingFrom, string travellingTo, DateTime departureDate, int duration)
     {
         return new SearchResult()
         {
-            Flight = new Flight()
-            {
-                Id = 2,
-                Airline = "First Class Air",
-                From = "MAN",
-                To = "TFS",
-                DepartureDate = new DateTime(2023,07,01)
-            },
+            Flight = flightSearch.FindBestValueFlight(departingFrom, travellingTo, departureDate, duration),
             Hotel = new Hotel()
             {
                 Id = 9,
