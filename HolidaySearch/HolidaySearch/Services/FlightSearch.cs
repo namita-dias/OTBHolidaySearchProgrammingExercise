@@ -14,8 +14,6 @@ namespace HolidaySearch.Services
 
         public Flight FindBestValueFlight(string departingFrom, string travellingTo, DateTime departureDate)
         {
-            List<Flight> test = ReadFlightsData();
-
             return ReadFlightsData().Where(flight => flight.From == (departingFrom.Split('(', ')')[1]) && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).FirstOrDefault();
         }
 
