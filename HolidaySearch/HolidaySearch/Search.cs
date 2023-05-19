@@ -14,7 +14,8 @@ public class Search
 
     public SearchResult FindBestValueHoliday(string departingFrom, string travellingTo, DateTime departureDate, int duration)
     {
-        try { 
+        try
+        { 
 
             Flight bestValueFlight = flightSearch.FindBestValueFlight(departingFrom, travellingTo, departureDate);
             Hotel bestValueHotel = hotelSearch.FindBestValueHotels(travellingTo, departureDate, duration);
