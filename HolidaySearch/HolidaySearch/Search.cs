@@ -7,14 +7,14 @@ public class Search
     private IFlightSearch flightSearch;
     public Search()
     {
-        flightSearch = new FlightSearch();
+        flightSearch = new FlightSearch("/Data/Flights.json");
     }
 
     public SearchResult FindBestValueHoliday(string departingFrom, string travellingTo, DateTime departureDate, int duration)
     {
         return new SearchResult()
         {
-            Flight = flightSearch.FindBestValueFlight(departingFrom, travellingTo, departureDate, duration),
+            Flight = flightSearch.FindBestValueFlight(departingFrom, travellingTo, departureDate),
             Hotel = new Hotel()
             {
                 Id = 9,

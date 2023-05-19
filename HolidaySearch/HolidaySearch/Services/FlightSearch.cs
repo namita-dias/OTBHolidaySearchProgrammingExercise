@@ -1,24 +1,36 @@
 ﻿using System;
+using System.Text.Json;
 using HolidaySearch.Models;
 
 namespace HolidaySearch.Services
 {
     public class FlightSearch : IFlightSearch
     {
-        public FlightSearch()
+        private string _filePath;
+        public FlightSearch(string filePath)
         {
+            _filePath = Environment.CurrentDirectory + filePath;
         }
 
-        public Flight FindBestValueFlight(string departingFrom, string travellingTo, DateTime departureDate, int duration)
+        public Flight FindBestValueFlight(string departingFrom, string travellingTo, DateTime departureDate)
         {
-            return new Flight()
+            List<Flight> test = ReadFlightsData();
+
+            return ReadFlightsData().Where(flight => flight.From == (departingFrom.Split('(', ')')[1]) && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).FirstOrDefault();
+        }
+
+        private List<Flight> ReadFlightsData()
+        {
+            try
             {
-                Id = 2,
-                Airline = "First Class Air",
-                From = "MAN",
-                To = "TFS",
-                DepartureDate = new DateTime(2023, 07, 01)
-            };
+                string flightJson = File.ReadAllText(_filePath);
+                return JsonSerializer.Deserialize<List<Flight>>(flightJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error reading flight data." + ex);
+                return null;
+            }
         }
 
     }
