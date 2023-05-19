@@ -9,7 +9,7 @@ public class Search
     public Search()
     {
         flightSearch = new FlightSearch("/Data/Flights.json");
-        hotelSearch = new HotelSearch();
+        hotelSearch = new HotelSearch("/Data/Hotels.json");
     }
 
     public SearchResult FindBestValueHoliday(string departingFrom, string travellingTo, DateTime departureDate, int duration)

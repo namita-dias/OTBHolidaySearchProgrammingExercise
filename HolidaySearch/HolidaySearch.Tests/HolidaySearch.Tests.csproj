@@ -23,6 +23,7 @@
   <ItemGroup>
     <None Remove="Data\" />
     <None Remove="Data\Flights.json" />
+    <None Remove="Data\Hotels.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -31,5 +32,11 @@
     <EmbeddedResource Include="Data\Flights.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Data\Hotels.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Data\Hotel.cs" />
   </ItemGroup>
 </Project>
