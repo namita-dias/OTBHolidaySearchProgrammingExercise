@@ -12,17 +12,25 @@ namespace HolidaySearch.Services
             _filePath = Environment.CurrentDirectory + filePath;
         }
 
-        public List<Flight> FindBestValueFlight(string departingFrom, string travellingTo, DateTime departureDate)
+        public List<Flight> FindBestValueFlight(List<string> departingFrom, string travellingTo, DateTime departureDate)
         {
+            List<Flight> flights = ReadFlightsData();
+
             try
             {
-                if (departingFrom.Contains("Any London Airport"))
-                    return ReadFlightsData().Where(flight => (flight.From == "LTN" || flight.From == "LGW") && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).OrderBy(price => price.Price).ToList();
+                List<Flight> bestValueFlights = new List<Flight>();
+
+                if (departingFrom.Contains("Any Airport"))
+                    bestValueFlights = flights.Where(flight => flight.To.Contains(travellingTo) && flight.Departure_Date == departureDate).OrderBy(price => price.Price).ToList();
                 else
-                    if (departingFrom.Contains("Any Airport"))
-                    return ReadFlightsData().Where(flight => flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).OrderBy(price => price.Price).ToList();
-                else
-                    return ReadFlightsData().Where(flight => flight.From == (departingFrom.Split('(', ')')[1]) && flight.To == (travellingTo.Split('(', ')')[1]) && flight.Departure_Date == departureDate).ToList();
+                {
+                    foreach(string airport in departingFrom)
+                    {
+                        bestValueFlights.Add(flights.Where(flight => flight.From.Contains(airport) && flight.To.Contains(travellingTo) && flight.Departure_Date == departureDate).FirstOrDefault());
+                    }
+                }
+
+                return bestValueFlights;
             }
             catch (Exception ex)
             {

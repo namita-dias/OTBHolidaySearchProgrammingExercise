@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using HolidaySearch.Helper;
 using HolidaySearch.Models;
 using HolidaySearch.Services;
 
@@ -16,11 +17,19 @@ public class Search
     public List<SearchResult> FindBestValueHoliday(string departingFrom, string travellingTo, DateTime departureDate, int duration)
     {
         try
-        { 
+        {
+            //Get airport codes from airport names
+            List<string> from = AirportHelper.GetAirportCodes(departingFrom);
+            string to = AirportHelper.GetAirportCodes(travellingTo).FirstOrDefault();
 
-            List<Flight> bestValueFlights = flightSearch.FindBestValueFlight(departingFrom, travellingTo, departureDate);
-            List<Hotel> bestValueHotels = hotelSearch.FindBestValueHotels(travellingTo, departureDate, duration);
+            if (!IsInputValid(from, to, departureDate, duration))
+                return null;
 
+            //get flights and hotels
+            List<Flight> bestValueFlights = flightSearch.FindBestValueFlight(from, to, departureDate);
+            List<Hotel> bestValueHotels = hotelSearch.FindBestValueHotels(to, departureDate, duration);
+
+            //combine flights and hotels and sort by total price
             List<SearchResult> bestValueHolidays = CombineFlightsAndHotels(bestValueFlights, bestValueHotels);
 
             return bestValueHolidays.OrderBy(price => price.TotalPrice).ToList();
@@ -30,6 +39,14 @@ public class Search
             Console.WriteLine("Error finding the best value holiday." + ex);
             return null;
         }
+    }
+
+    private bool IsInputValid(List<string> departingFrom, string travellingTo, DateTime departureDate, int duration)
+    {
+        return (departingFrom.Count > 0
+            && travellingTo != string.Empty
+            && departureDate > new DateTime()
+            && duration > 0);
     }
 
     private List<SearchResult> CombineFlightsAndHotels(List<Flight> bestValueFlights, List<Hotel> bestValueHotels)

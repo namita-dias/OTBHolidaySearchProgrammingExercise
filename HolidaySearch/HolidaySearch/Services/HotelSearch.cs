@@ -16,7 +16,7 @@ namespace HolidaySearch.Services
         {
             try
             {
-                return ReadHotelData()!.Where(hotel => hotel.Local_Airports.Contains(travellingTo.Split('(', ')')[1]) && hotel.Arrival_Date == arrivalDate && hotel.Nights == duration).OrderBy(price => price.Price_Per_Night).ToList();
+                return ReadHotelData()!.Where(hotel => hotel.Local_Airports.Contains(travellingTo) && hotel.Arrival_Date == arrivalDate && hotel.Nights == duration).OrderBy(price => price.Price_Per_Night).ToList();
             }
             catch (Exception ex)
             {

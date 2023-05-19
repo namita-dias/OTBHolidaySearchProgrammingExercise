@@ -19,4 +19,15 @@ public class SearchTests
         Assert.That(result.First().Flight.Id, Is.EqualTo(expectedFlight));
         Assert.That(result.First().Hotel.Id, Is.EqualTo(expectedHotel));
     }
+
+    [TestCase("No Airport", "Gran Canaria Airport (LPA)", "2022/11/10", 14)]
+    [TestCase("London Luton Airport (LTN)", "No Airport", "2022/11/10", 14)]
+    [TestCase("London Luton Airport (LTN)", "Gran Canaria Airport (LPA)", "0001/01/01", 14)]
+    [TestCase("London Luton Airport (LTN)", "Gran Canaria Airport (LPA)", "2022/11/10", 0)]
+    public void GivenInvalidInput_ThenReturnsNull(string departingFrom, string travellingTo, DateTime departureDate, int duration)
+    {
+        var result = search.FindBestValueHoliday(departingFrom, travellingTo, departureDate, duration);
+
+        Assert.IsNull(result);
+    }
 }
